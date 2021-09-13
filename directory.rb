@@ -27,19 +27,25 @@ def print(students)
   end
 end
 
-def begins_with(names, char)
-  puts "Please enter a letter that the student name begins with"
-  char = gets.downcase.chomp
-  puts names.select { |student| student[:name].downcase.start_with?(char) }
-end
-
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
+
+def begins_with(students)
+  puts "Please enter the letter that the student name begins with"
+  char = gets.downcase.chomp
+  puts students.select { |student| student[:name].downcase.start_with?(char) }
+end
+
+def shorter_names(students)
+  puts students.select { |student| student[:name].length < 12 }
+end
+
 
 students = input_students
 # nothing happens until the methods are called
 print_header
 print(students)
 print_footer(students)
-begins_with(students, "H")
+begins_with(students)
+shorter_names(students)
