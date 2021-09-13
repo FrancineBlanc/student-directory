@@ -5,7 +5,8 @@ def input_students
   name = gets.chomp
   until name.empty? do
     students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+    string = "Now we have #{students.count}"
+    puts students.count == 1 ? "#{string} student" : "#{string} students"
     name = gets.chomp
   end
   students
@@ -17,13 +18,18 @@ def print_header
 end
 
 def print(students)
-  students.each_with_index do |student, index| 
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  unless students.empty?
+    students.each_with_index do |student, index| 
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  else
+    puts "There are no students in the list to print"
   end
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  string = "Overall, we have #{names.count} great"
+  puts names.count == 1? "#{string} student" : "#{string} students"
 end
 
 def begins_with(students)
@@ -53,5 +59,7 @@ students = input_students
 print_header
 print(students)
 print_footer(students)
+puts
 begins_with(students)
+puts
 shorter_names(students)
