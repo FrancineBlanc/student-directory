@@ -1,24 +1,19 @@
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  #create an empty array
   students = []
-  #get the first name
   name = gets.chomp
-  #while the name is not empty, repeat this code
-  while !name.empty? do
+  until name.empty? do
     students << {name: name, cohort: :november}
     puts "Now we have #{students.count} students"
-    #get another name from the user
     name = gets.chomp
   end
-  #return the array of students
   students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "--------------"
+  puts "The students of Villains Academy".center(20)
+  puts "--------------".center(30)
 end
 
 def print(students)
@@ -34,16 +29,27 @@ end
 def begins_with(students)
   puts "Please enter the letter that the student name begins with"
   char = gets.downcase.chomp
-  puts students.select { |student| student[:name].downcase.start_with?(char) }
+  matched_names = students.select { |student| student[:name].downcase.start_with?(char) }
+  unless matched_names.empty?
+    puts "The following students start with the letter \"#{char.upcase}\""
+    puts matched_names
+  else 
+    puts "No students start with the letter \"#{char.upcase}\"."
+  end
 end
 
 def shorter_names(students)
-  puts students.select { |student| student[:name].length < 12 }
+  short_names = students.select { |student| student[:name].length < 12 }
+  unless short_names.empty?
+    puts "The following students' names are less than 12 characters long:"
+    puts short_names
+  else
+    puts "No students have a name less than 12 characters long."
+  end
 end
 
 
 students = input_students
-# nothing happens until the methods are called
 print_header
 print(students)
 print_footer(students)
