@@ -1,3 +1,5 @@
+require 'csv'
+
 @students = []
 
 def print_menu
@@ -73,19 +75,17 @@ def print_footer
 end
 
 def save_students
-  puts "Please enter the file name to save to"
+  puts "Please enter the file name to save to (in .csv format)"
   filename = STDIN.gets.chomp
-  File.open(filename, "w") do |file|
+  CSV.open(filename, "w") do |row|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      line = student_data.join(",")
-      file.puts line
+      row << [student[:name], student[:cohort]]
     end
   end
 end
 
 def load_students
-  puts "Please enter the file to load from"
+  puts "Please enter the file to load from (this must be a .csv file)"
   filename = STDIN.gets.chomp
   get_students(filename)
 end
@@ -103,11 +103,10 @@ def try_load_students
 end
 
 def get_students(filename)
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_students(name, cohort.to_sym)
-    end
+  CSV.foreach(filename) do |row|
+    name = row[0]
+    cohort = row[1]
+    add_students(name, cohort.to_sym)
   end
 end
 
