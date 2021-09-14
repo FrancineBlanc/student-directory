@@ -3,8 +3,8 @@
 def print_menu
   puts "1. Input the students."
   puts "2. Show the students."
-  puts "3. Save the list"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the students list to a nominated file"
+  puts "4. Load the list from a nominated file"
   puts "5. Display students beginning with a particular letter"
   puts "6. Display students with short names"
   puts "9. Exit"
@@ -74,7 +74,7 @@ end
 
 def save_students
   puts "Please enter the file name to save to"
-  filename = gets.chomp
+  filename = STDIN.gets.chomp
   File.open(filename, "w") do |file|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
@@ -84,24 +84,30 @@ def save_students
   end
 end
 
-def load_students(filename)
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_students(name, cohort.to_sym)
-    end
-  end
+def load_students
+  puts "Please enter the file to load from"
+  filename = STDIN.gets.chomp
+  get_students(filename)
 end
 
 def try_load_students
   filename = ARGV.first
   filename ||= "students.csv"
   if File.exist?(filename)
-    load_students(filename)
+    get_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist"
     exit
+  end
+end
+
+def get_students(filename)
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_students(name, cohort.to_sym)
+    end
   end
 end
 
